@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maple &amp; Thread · ShipSafe demo shop</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <div class="demo-banner">Demo shop for <b>ShipSafe</b>. Payments use the PayPal sandbox. No real money moves.</div>
+  <div class="wrap">
+    <header class="top">
+      <div class="logo"><span class="mark">🍁</span> Maple &amp; Thread</div>
+      <div class="chips">
+        <span class="chip" id="mode-chip">Loading…</span>
+        <a class="btn" href="/dashboard">Seller view (ShipSafe) →</a>
+      </div>
+    </header>
+
+    <main class="shop">
+      <section>
+        <p class="muted" style="margin-top:0">Handmade goods from a small (made-up) studio. Add something to your cart and check out with PayPal.</p>
+        <div class="products" id="products"></div>
+      </section>
+
+      <aside class="card cart" aria-labelledby="cart-title">
+        <h2 id="cart-title">Your cart</h2>
+        <div id="cart-lines" class="muted small">Nothing here yet.</div>
+        <div class="total"><span>Total</span><span id="cart-total">$0.00</span></div>
+
+        <label class="field">Shipping
+          <select id="speed">
+            <option value="standard">Standard (3–5 days)</option>
+            <option value="overnight">Overnight</option>
+          </select>
+        </label>
+        <label class="field">Note to the seller (optional)
+          <textarea id="note" maxlength="500" placeholder="Anything the shop should know?"></textarea>
+        </label>
+
+        <div id="paypal-area"></div>
+        <div id="result" role="status"></div>
+      </aside>
+    </main>
+  </div>
+  <script src="/shop.js" type="module"></script>
+</body>
+</html>

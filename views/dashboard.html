@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ShipSafe · Seller dashboard</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <div class="demo-banner">ShipSafe demo. Sample orders use made-up people. Restarting the server resets the data.</div>
+  <div class="wrap">
+    <header class="top">
+      <div class="logo"><span class="mark">🛡️</span> ShipSafe <span class="muted small" style="font-weight:500">for Maple &amp; Thread</span></div>
+      <div class="chips">
+        <span class="chip" id="paypal-chip">PayPal…</span>
+        <span class="chip" id="ai-chip">AI…</span>
+        <a class="btn" href="/">← Shop</a>
+      </div>
+    </header>
+
+    <section class="stats" aria-label="Summary">
+      <div class="card stat"><div class="n" id="s-total">–</div><div class="l">Orders</div></div>
+      <div class="card stat"><div class="n" id="s-ship">–</div><div class="l">Safe to ship</div></div>
+      <div class="card stat"><div class="n" id="s-hold">–</div><div class="l">Held / check</div></div>
+      <div class="card stat"><div class="n" id="s-saved">–</div><div class="l">$ kept from risky orders</div></div>
+    </section>
+
+    <main class="layout">
+      <section>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap">
+          <h2 style="margin:0;font-size:18px">Orders to review</h2>
+          <span class="muted small">Click an order to see why.</span>
+        </div>
+        <div class="orders" id="orders"><div class="muted">Loading…</div></div>
+      </section>
+
+      <aside class="side">
+        <div class="card panel">
+          <h3>Is this message a scam?</h3>
+          <span class="muted small">Paste a message a buyer sent you (email, text, Etsy, Facebook…).</span>
+          <textarea id="msg" maxlength="2000" placeholder="Hi, I want 5 blankets. My shipper will pick up and I'll send extra money for him…"></textarea>
+          <button class="btn primary" id="msg-btn">Check message</button>
+          <div id="msg-result"></div>
+        </div>
+
+        <div class="card panel">
+          <h3>How ShipSafe works</h3>
+          <ol class="how">
+            <li>A buyer pays through <b>PayPal</b> checkout.</li>
+            <li>ShipSafe reads the PayPal payment (Seller Protection status, payer country, ship-to address) and runs 11 fraud checks.</li>
+            <li><b>AI</b> reviews the facts and the buyer's note, and explains the risk in plain words.</li>
+            <li>Risky orders are <b>put on hold automatically</b>. You can ship, keep holding, or refund through PayPal in one click.</li>
+          </ol>
+          <span class="muted small">Safety floor: the AI can raise a risk score but can only lower the rule score by 15 points, so a buyer can't talk it into "safe."</span>
+          <button class="btn" id="reset-btn">Reset demo data</button>
+        </div>
+      </aside>
+    </main>
+  </div>
+  <script src="/dashboard.js" type="module"></script>
+</body>
+</html>

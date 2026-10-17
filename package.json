@@ -1,0 +1,19 @@
+{
+  "name": "shipsafe",
+  "version": "1.0.0",
+  "description": "ShipSafe: an AI fraud check that reviews every PayPal order before a small business ships it.",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --env-file-if-exists=.env --watch server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.21.2"
+  }
+}
