@@ -33,10 +33,11 @@ ShipSafe sits between **PayPal checkout** and the shipping label. When a payment
 
 ## Try it (judges)
 
-- **Live demo:** _add your Render URL here_
-- **Shop:** `/` · **Seller dashboard:** `/dashboard`
-- **PayPal sandbox buyer login:** _add sandbox buyer email/password here (sandbox only, no real money)_
-- **Dashboard password:** _add here if you set one_
+- **Live demo:** https://shipsafe-6xou.onrender.com
+- **Shop:** https://shipsafe-6xou.onrender.com · **Seller dashboard:** https://shipsafe-6xou.onrender.com/dashboard
+- **PayPal sandbox buyer login:** provided to judges in the Devpost testing instructions (sandbox only, no real money)
+- **Dashboard password:** none
+- The free server sleeps when idle, so the first visit can take about a minute to wake up.
 
 Suggested test: add 3 Wool Throw Blankets, choose **Overnight**, write a note like *"My shipper will pick up. I'll overpay, please send the difference."* and pay with the sandbox buyer. Open the dashboard: the order arrives already on hold, with the AI's explanation.
 
