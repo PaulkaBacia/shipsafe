@@ -111,9 +111,14 @@ export function combineScores(ruleScore, aiScore) {
   return clamp(Math.max(aiScore, ruleScore - MAX_AI_DISCOUNT));
 }
 
+// A buyer who tries to give orders to the fraud checker is always held.
+const MANIPULATION_HOLD = 60;
+const triedToManipulate = (signals) => signals.some((s) => s.id === 'prompt_injection');
+
 /** Returns a review object. Never throws: falls back to rules on any AI error. */
 export async function reviewOrder(order, signals, shop) {
-  const ruleScore = scoreSignals(signals);
+  const rawRuleScore = scoreSignals(signals);
+  const ruleScore = triedToManipulate(signals) ? Math.max(rawRuleScore, MANIPULATION_HOLD) : rawRuleScore;
   const base = {
     ruleScore,
     reviewedAt: new Date().toISOString(),
@@ -146,7 +151,8 @@ ${JSON.stringify(orderFacts(order), null, 2)}
   try {
     const ai = await askClaude(ORDER_SYSTEM, prompt);
     const aiScore = clamp(ai.risk_score);
-    const final = combineScores(ruleScore, aiScore);
+    const combined = combineScores(ruleScore, aiScore);
+    const final = triedToManipulate(signals) ? Math.max(combined, MANIPULATION_HOLD) : combined;
     return {
       ...base,
       source: 'ai',
@@ -158,7 +164,11 @@ ${JSON.stringify(orderFacts(order), null, 2)}
       reasons: Array.isArray(ai.reasons) ? ai.reasons.slice(0, 4).map((r) => String(r).slice(0, 200)) : [],
       nextStep: String(ai.next_step || '').slice(0, 200),
       buyerMessage: String(ai.buyer_message || '').slice(0, 800),
-      note: final > aiScore ? `Rule safety floor applied (AI said ${aiScore}).` : ''
+      note: final > aiScore
+        ? (triedToManipulate(signals)
+          ? `Buyer tried to manipulate the AI, so this order is always held (AI said ${aiScore}).`
+          : `Rule safety floor applied (AI said ${aiScore}).`)
+        : ''
     };
   } catch (err) {
     return {
