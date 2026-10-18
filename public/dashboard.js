@@ -106,8 +106,18 @@ function render() {
   box.replaceChildren(...(orders.length ? orders.map(orderCard) : [h('div', { class: 'muted' }, 'No orders yet.')]));
 }
 
+// Two-step confirm inside the page (pop-up dialogs are blocked in some browsers).
+function armed(btn, label) {
+  if (btn.dataset.armed === '1') return true;
+  btn.dataset.armed = '1';
+  const old = btn.textContent;
+  btn.textContent = label;
+  setTimeout(() => { if (btn.isConnected && btn.dataset.armed === '1') { btn.dataset.armed = ''; btn.textContent = old; } }, 4000);
+  return false;
+}
+
 async function doAction(btn, id, action) {
-  if (action === 'refund' && !confirm('Refund this order in full through PayPal?')) return;
+  if (action === 'refund' && !armed(btn, 'Click again to refund')) return;
   const old = btn.textContent;
   btn.disabled = true; btn.replaceChildren(h('span', { class: 'spin' }), ' Working…');
   try {
@@ -117,8 +127,8 @@ async function doAction(btn, id, action) {
     orders = orders.map((o) => (o.id === id ? order : o));
     render();
   } catch (e) {
-    alert(e.message);
-    btn.disabled = false; btn.textContent = old;
+    btn.disabled = false; btn.textContent = `Error: ${e.message}`;
+    setTimeout(() => { if (btn.isConnected) btn.textContent = old; }, 4000);
   }
 }
 
@@ -150,8 +160,8 @@ document.getElementById('msg-btn').addEventListener('click', async (e) => {
   } finally { e.target.disabled = false; }
 });
 
-document.getElementById('reset-btn').addEventListener('click', async () => {
-  if (!confirm('Reset to the 5 sample orders? New test orders will be removed.')) return;
+document.getElementById('reset-btn').addEventListener('click', async (e) => {
+  if (!armed(e.target, 'Click again to reset (removes new orders)')) return;
   await api('/api/seller/reset', {});
   open.clear();
   await load();
