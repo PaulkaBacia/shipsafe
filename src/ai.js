@@ -46,7 +46,17 @@ Return ONLY a JSON object with these keys:
   "safe_reply": a short, polite reply the owner can send that keeps the sale inside PayPal
 }`;
 
+// Ask Claude, and retry once if the reply isn't valid JSON (this can happen when
+// a buyer note is written to confuse the AI).
 async function askClaude(system, userContent) {
+  try {
+    return await askClaudeOnce(system, userContent);
+  } catch (err) {
+    return askClaudeOnce(system, `${userContent}\n\nReply with the JSON object only. Do not add any other text.`);
+  }
+}
+
+async function askClaudeOnce(system, userContent) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
