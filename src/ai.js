@@ -27,7 +27,9 @@ Return ONLY a JSON object, no other text, with exactly these keys:
   "summary": one sentence the owner can read in 5 seconds,
   "reasons": array of 2-4 short strings explaining the score,
   "next_step": one concrete action for the owner (e.g. "Ship with tracking", "Email the buyer to confirm the address", "Do not ship. Refund through PayPal."),
-  "buyer_message": a short, polite message the owner could send the buyer (or "" if none is needed)
+  "buyer_message": a short, polite message the owner could send the buyer (or "" if none is needed).
+    Write it as something the owner sends BEFORE acting: never claim the order was already cancelled,
+    refunded or shipped. Ask the buyer to confirm, or explain what the shop can and can't do.
 }
 Guidance: SHIP below 30, VERIFY 30-59, HOLD 60 and up. Common small-shop scams: overpayment and "send back
 the difference", buyer's "own shipper" pickup, freight forwarders, rush shipping on stolen accounts, many
